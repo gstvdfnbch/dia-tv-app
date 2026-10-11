@@ -11,8 +11,14 @@ class ProgramacaoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final blocks = [...content.schedule]
+    final now = DateTime.now();
+    final nowMin = now.hour * 60 + now.minute;
+    final sorted = [...content.schedule]
       ..sort((a, b) => a.startMinutes.compareTo(b.startMinutes));
+    // Só o que está no ar agora ou ainda vai começar — oculta o que já passou.
+    var blocks =
+        sorted.where((b) => b.endMinutes > nowMin).toList();
+    if (blocks.isEmpty) blocks = sorted; // fim do dia: mostra a grade inteira
     final onNow = content.onNow;
 
     return CustomScrollView(

@@ -54,6 +54,15 @@ class ScheduleBlock {
     if (p.length < 2) return 0;
     return (int.tryParse(p[0]) ?? 0) * 60 + (int.tryParse(p[1]) ?? 0);
   }
+
+  /// Minuto de término no dia; se o bloco vira a meia-noite, soma 24h.
+  int get endMinutes {
+    final p = endsAt.split(':');
+    if (p.length < 2) return startMinutes;
+    var e = (int.tryParse(p[0]) ?? 0) * 60 + (int.tryParse(p[1]) ?? 0);
+    if (e <= startMinutes) e += 24 * 60;
+    return e;
+  }
 }
 
 class VideoItem {
