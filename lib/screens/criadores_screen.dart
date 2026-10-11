@@ -63,6 +63,7 @@ class _CriadoresScreenState extends State<CriadoresScreen> {
             height: 380,
             child: PageView.builder(
               controller: _controller,
+              clipBehavior: Clip.none,
               itemCount: creators.length,
               onPageChanged: (i) => setState(() => _selected = i),
               itemBuilder: (context, i) {
