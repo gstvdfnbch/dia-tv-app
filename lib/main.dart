@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'core/app_config.dart';
 import 'core/theme.dart';
 import 'data/content_repository.dart';
 import 'models/models.dart';
@@ -8,7 +9,11 @@ import 'screens/criadores_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/programacao_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Camada de configuração: bundle + dart-define primeiro (síncrono o
+  // suficiente para o boot); o override remoto é aplicado em segundo plano.
+  await AppConfig.instance.load();
   runApp(const DiaTvApp());
 }
 
@@ -47,9 +52,13 @@ class _RootShellState extends State<RootShell> {
     // Carrega o conteúdo empacotado (extraído do site) e exibe imediatamente.
     final c = await ContentRepository.instance.load();
     if (mounted) setState(() => _content = c);
-    // Em seguida, tenta atualizar com o conteúdo ao vivo do site.
-    final fresh = await ContentRepository.instance.refreshFromSite();
-    if (mounted && !identical(fresh, c)) setState(() => _content = fresh);
+    // Aplica override de config remoto (se houver), e então tenta atualizar
+    // o conteúdo ao vivo do site — ambos controláveis pela AppConfig.
+    await AppConfig.instance.refreshRemote();
+    if (AppConfig.instance.enableRemoteRefresh) {
+      final fresh = await ContentRepository.instance.refreshFromSite();
+      if (mounted && !identical(fresh, c)) setState(() => _content = fresh);
+    }
   }
 
   @override

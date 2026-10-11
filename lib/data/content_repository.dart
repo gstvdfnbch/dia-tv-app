@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 
+import '../core/app_config.dart';
 import '../models/models.dart';
 
 /// Repositório de conteúdo da diatv.
@@ -18,7 +19,7 @@ class ContentRepository {
   ContentRepository._();
   static final ContentRepository instance = ContentRepository._();
 
-  static const String base = 'https://diaestudio.com/site';
+  String get base => AppConfig.instance.siteBaseUrl;
   SiteContent? _cache;
 
   Future<SiteContent> load() async {

@@ -38,6 +38,28 @@ Este app reproduz esse fluxo:
 Modelos de dados em `models/models.dart` espelham os objetos reais do site
 (`ScheduleBlock`, `VideoItem`, `Creator`, etc.).
 
+## Configuração (controle remoto)
+
+`core/app_config.dart` + `assets/config.json` centralizam tudo que pode mudar
+sem recompilar: base URL do site, URLs de login/ingressos/privacidade, redes
+sociais, fallback da live, dados do Supabase e feature flags
+(`maintenanceMode`, `showIngressos`, …). Precedência, do menor para o maior:
+
+1. **Bundle** — `assets/config.json`.
+2. **Build** — `--dart-define=SITE_BASE_URL=…` / `--dart-define=REMOTE_CONFIG_URL=…`.
+3. **Remoto** — um JSON hospedado em `remoteConfigUrl`, buscado no boot e
+   mesclado por cima (deep-merge). É o que permite **controlar o app
+   remotamente** depois de publicado: trocar a live, URLs ou ligar o modo
+   manutenção sem passar pela loja.
+
+Para ativar o controle remoto, basta apontar `remoteConfigUrl` (no
+`assets/config.json` ou via dart-define) para um JSON com as chaves a
+sobrescrever, por exemplo:
+
+```json
+{ "live": { "fallbackVideoId": "NOVO_ID" }, "features": { "showIngressos": false } }
+```
+
 ## Rodar
 
 ```bash

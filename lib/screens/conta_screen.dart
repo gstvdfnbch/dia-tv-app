@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../core/app_config.dart';
 import '../core/theme.dart';
 import '../widgets/common.dart';
 
@@ -15,6 +16,20 @@ class ContaScreen extends StatelessWidget {
     if (uri != null) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
+  }
+
+  static String _socialLabel(String key) {
+    const names = {
+      'youtube': 'YouTube',
+      'instagram': 'Instagram',
+      'tiktok': 'TikTok',
+      'facebook': 'Facebook',
+      'x': 'X',
+      'linkedin': 'LinkedIn',
+      'twitch': 'Twitch',
+      'whatsapp': 'WhatsApp',
+    };
+    return names[key] ?? (key.isEmpty ? key : '${key[0].toUpperCase()}${key.substring(1)}');
   }
 
   @override
@@ -59,8 +74,7 @@ class ContaScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
-                      onPressed: () =>
-                          _open('https://diaestudio.com/site/entrar'),
+                      onPressed: () => _open(AppConfig.instance.loginUrl),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.black,
@@ -101,22 +115,22 @@ class ContaScreen extends StatelessWidget {
         SliverToBoxAdapter(
           child: Column(
             children: [
-              _AccountTile(
-                icon: Icons.confirmation_number_outlined,
-                title: 'Ingressos',
-                subtitle: 'Eventos e shows da diatv',
-                onTap: () => _open(
-                    'https://www.eventim.com.br/artist/diatv/?affiliate=ZR4'),
-              ),
+              if (AppConfig.instance.showIngressos)
+                _AccountTile(
+                  icon: Icons.confirmation_number_outlined,
+                  title: 'Ingressos',
+                  subtitle: 'Eventos e shows da diatv',
+                  onTap: () => _open(AppConfig.instance.ingressosUrl),
+                ),
               _AccountTile(
                 icon: Icons.info_outline,
                 title: 'Quem somos',
-                onTap: () => _open('https://diaestudio.com/site'),
+                onTap: () => _open(AppConfig.instance.sobreUrl),
               ),
               _AccountTile(
                 icon: Icons.privacy_tip_outlined,
                 title: 'Privacidade',
-                onTap: () => _open('https://diaestudio.com/site/privacidade'),
+                onTap: () => _open(AppConfig.instance.privacidadeUrl),
               ),
             ],
           ),
@@ -129,13 +143,8 @@ class ContaScreen extends StatelessWidget {
               spacing: 10,
               runSpacing: 10,
               children: [
-                _social('YouTube', 'https://www.youtube.com/@DiaTV'),
-                _social('Instagram', 'https://www.instagram.com/diaestudio'),
-                _social('TikTok', 'https://www.tiktok.com/@diaestudio'),
-                _social('Facebook', 'https://www.facebook.com/DiaEstudioBR'),
-                _social('X', 'https://twitter.com/diaestudio'),
-                _social('LinkedIn',
-                    'https://www.linkedin.com/company/dia-estúdio'),
+                for (final e in AppConfig.instance.social.entries)
+                  _social(_socialLabel(e.key), e.value),
               ],
             ),
           ),

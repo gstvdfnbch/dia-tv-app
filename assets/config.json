@@ -1,0 +1,33 @@
+{
+  "configVersion": 1,
+  "remoteConfigUrl": null,
+  "siteBaseUrl": "https://diaestudio.com/site",
+  "enableRemoteRefresh": true,
+  "live": {
+    "fallbackVideoId": "Df3g76Y25gs",
+    "title": "diatv: Ao Vivo"
+  },
+  "supabase": {
+    "url": "https://engrpdqhrxptzrhecaps.supabase.co",
+    "publishableKey": "sb_publishable_aQAgXnOB2atGCD0Wa7x_BQ_2nEK-FHH"
+  },
+  "links": {
+    "login": "https://diaestudio.com/site/entrar",
+    "ingressos": "https://www.eventim.com.br/artist/diatv/?affiliate=ZR4",
+    "privacidade": "https://diaestudio.com/site/privacidade",
+    "sobre": "https://diaestudio.com/site"
+  },
+  "social": {
+    "youtube": "https://www.youtube.com/@DiaTV",
+    "instagram": "https://www.instagram.com/diaestudio",
+    "tiktok": "https://www.tiktok.com/@diaestudio",
+    "facebook": "https://www.facebook.com/DiaEstudioBR",
+    "x": "https://twitter.com/diaestudio",
+    "linkedin": "https://www.linkedin.com/company/dia-estúdio"
+  },
+  "features": {
+    "maintenanceMode": false,
+    "maintenanceMessage": "",
+    "showIngressos": true
+  }
+}
